@@ -1,0 +1,19 @@
+{
+  "name": "aikidoc",
+  "version": "1.0.0",
+  "description": "Script to compress context and send to LLMs",
+  "main": "index.js",
+  "bin": {
+    "aikidoc": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@dqbd/tiktoken": "^1.0.21",
+    "axios": "^1.4.0",
+    "commander": "^11.0.0",
+    "dotenv": "^16.0.3",
+    "gpt-3-encoder": "^1.1.4"
+  }
+}
