@@ -54,19 +54,22 @@ aikidoc/
 
 ```
 # OpenAI credentials
-OPENAI_API_KEY=your_openai_api_key
+# See model names here: https://platform.openai.com/docs/models
+OPENAI_API_KEY=
 OPENAI_MODEL=o4-mini-2025-04-16
 
 # Anthropic (Claude) credentials
-ANTHROPIC_API_KEY=your_anthropic_api_key
+# See model names here: https://docs.anthropic.com/claude/reference/models
+ANTHROPIC_API_KEY=
 CLAUDE_MODEL=claude-3-7-sonnet-latest
 
 # Google (Gemini) credentials
-GOOGLE_API_KEY=your_google_api_key
+# See model names here: https://ai.google.dev/gemini-api/docs/models
+GOOGLE_API_KEY=
 GEMINI_MODEL=gemini-2.0-flash
 
 # Ollama configuration
-# No API key required, but you can customize the host and model
+# See available models with the 'ollama list' command
 OLLAMA_HOST=http://localhost:11434
 OLLAMA_MODEL=llama3.2
 ```
