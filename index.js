@@ -118,6 +118,9 @@ async function main() {
     const credentials = {};
     const availableLLMs = [];
     
+    // Always add Ollama as an available LLM since it doesn't require an API key
+    availableLLMs.push('ollama');
+    
     credentialsText.split('\n').forEach(line => {
       const line_trimmed = line.trim();
       if (line_trimmed === '' || line_trimmed.startsWith('#')) return;

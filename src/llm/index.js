@@ -1,6 +1,7 @@
 const { sendToGemini } = require('./gemini');
 const { sendToClaude } = require('./claude');
 const { sendToOpenAI } = require('./openai');
+const { sendToOllama } = require('./ollama');
 
 /**
  * Send context and prompt to specified LLM
@@ -8,7 +9,7 @@ const { sendToOpenAI } = require('./openai');
  * @param {string} context - Compressed context
  * @param {string} prompt - User prompt
  * @param {string} credentials - API credentials
- * @param {string} provider - LLM provider (gemini, claude, openai)
+ * @param {string} provider - LLM provider (gemini, claude, openai, ollama)
  * @returns {string} - LLM response
  */
 async function sendToLLM(context, prompt, credentials, provider) {
@@ -26,6 +27,8 @@ async function sendToLLM(context, prompt, credentials, provider) {
       return await sendToClaude(fullPrompt, parsedCredentials);
     case 'openai':
       return await sendToOpenAI(fullPrompt, parsedCredentials);
+    case 'ollama':
+      return await sendToOllama(fullPrompt, parsedCredentials);
     default:
       throw new Error(`Unsupported LLM provider: ${provider}`);
   }

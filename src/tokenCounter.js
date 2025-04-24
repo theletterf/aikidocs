@@ -15,6 +15,8 @@ function countTokens(text, model) {
       return Math.ceil(gptEncode(text).length * 1.05); // 5% buffer for Claude specifics
     case 'gemini':
       return Math.ceil(text.length / 4); // ~4 chars per token as rough estimation
+    case 'ollama':
+      return Math.ceil(text.length / 3.5); // ~3.5 chars per token as estimation for most Ollama models
     default:
       return Math.ceil(text.length / 4); // Default estimation
   }
