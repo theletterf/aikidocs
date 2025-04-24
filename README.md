@@ -7,7 +7,7 @@ The purpose of this tool is _testing_. Use it to test prompts in combination wit
 ## Features
 
 - Send prompts with compressed context to multiple LLM providers.
-- Support for OpenAI, Anthropic Claude, and Google Gemini.
+- Support for OpenAI, Anthropic Claude, Google Gemini, and local Ollama models.
 - Smart token counting and cost estimation before sending requests.
 - Flexible prompt structure with base instructions and style guides.
 - Output responses saved with timestamps for reference.
@@ -44,6 +44,7 @@ aikidoc/
         ├── claude.js  # Anthropic Claude API interface
         ├── gemini.js  # Google Gemini API interface
         ├── index.js   # LLM module entry point
+        ├── ollama.js  # Local Ollama API interface
         └── openai.js  # OpenAI API interface
 ```
 
@@ -63,6 +64,11 @@ CLAUDE_MODEL=claude-3-7-sonnet-latest
 # Google (Gemini) credentials
 GOOGLE_API_KEY=your_google_api_key
 GEMINI_MODEL=gemini-2.0-flash
+
+# Ollama configuration
+# No API key required, but you can customize the host and model
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama3.2
 ```
 
 2. Place your context files in the `context` directory.
@@ -88,6 +94,9 @@ aikidoc --llm openai
 
 # Use Gemini
 aikidoc --llm gemini
+
+# Use local Ollama
+aikidoc --llm ollama
 ```
 
 ### Custom paths
@@ -125,7 +134,7 @@ aikidoc --style my-style-guide.md
 | `--prompts` | `-p` | Path to prompts folder or file | `./prompts` |
 | `--base-instruction` | `-b` | Name of base instruction file | `base-instructions.md` |
 | `--style` | `-s` | Name of style guide file | `style.md` |
-| `--llm` | `-l` | LLM provider (gemini, claude, openai) | Auto-detected |
+| `--llm` | `-l` | LLM provider (gemini, claude, openai, ollama) | Auto-detected |
 | `--output` | `-o` | Path to output folder | `./output` |
 
 ## License
