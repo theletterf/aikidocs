@@ -256,14 +256,13 @@ async function main() {
     // Write response to file
     fs.writeFileSync(outputFilePath, response, 'utf8');
     
-    console.log(`\nResponse saved to: ${outputFilePath}`);
-    
-    // In interactive mode, also display the response in the console
+    // In interactive mode, don't display the response in the console
+    // Just inform the user where to find the response with the specific filename
     if (options.interactive) {
-      console.log('\n=== LLM Response ===');
-      console.log('-------------------------------------------');
-      console.log(response);
-      console.log('-------------------------------------------\n');
+      console.log(`\nResponse saved to: ${outputFilePath}`);
+      console.log('Check the file for results.');
+    } else {
+      console.log(`\nResponse saved to: ${outputFilePath}`);
     }
   } catch (error) {
     console.error('Error:', error.message);
