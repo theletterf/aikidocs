@@ -2,7 +2,7 @@
 
 Aikidocs is a tool that sends contextual prompts to an LLM of your choice. It compresses content from files or directories and uses that as context for your prompts, allowing for more relevant responses from LLMs.
 
-[![asciicast](https://asciinema.org/a/lTO5lCq3oj1YrumHu8DoGigoi.svg)](https://asciinema.org/a/lTO5lCq3oj1YrumHu8DoGigoi)
+![demo](https://github.com/user-attachments/assets/a5a4b620-8597-4632-a97a-4d1f4f367440)
 
 The purpose of this tool is _testing_. The target audience is technical writers. Use it to test prompts in combination with context. To suggest a feature, file an issue. And remember: tech writers must own the prompts.
 
