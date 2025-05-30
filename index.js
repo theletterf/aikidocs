@@ -14,8 +14,9 @@ program
   .option('-p, --prompts <path>', 'path to prompts folder or file', './prompts')
   .option('-b, --base-instruction <name>', 'name of base instruction file to use', 'base-instructions.md')
   .option('-s, --style <name>', 'name of style guide file to use', 'style.md')
-  .option('-l, --llm <provider>', 'LLM provider (gemini, claude, openai)', '')
+  .option('-l, --llm <provider>', 'LLM provider (gemini, claude, openai, ollama)', '')
   .option('-o, --output <path>', 'path to output folder', './output')
+  .option('-i, --interactive', 'enable interactive mode to enter prompt in CLI')
   .parse(process.argv);
 
 const options = program.opts();
@@ -97,6 +98,48 @@ async function confirmCostEstimation(context, prompt, model) {
   });
 }
 
+/**
+ * Get user prompt in interactive mode
+ */
+async function getUserPrompt() {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  console.log('\n=== Interactive Mode ===');
+  console.log('Enter your prompt below. Type END on a new line when finished.');
+  console.log('This will be combined with the base instructions from your prompts folder.');
+  console.log('-------------------------------------------\n');
+  
+  return new Promise((resolve) => {
+    let userPrompt = '';
+    let isFirstLine = true;
+    
+    rl.on('line', (line) => {
+      if (line.trim().toUpperCase() === 'END') {
+        rl.close();
+        console.log('\n-------------------------------------------');
+        console.log(`Prompt received (${userPrompt.length} characters)\n`);
+        resolve(userPrompt.trim());
+      } else {
+        if (!isFirstLine) {
+          userPrompt += '\n';
+        }
+        userPrompt += line;
+        isFirstLine = false;
+      }
+    });
+    
+    // Handle Ctrl+C to cancel
+    rl.on('SIGINT', () => {
+      console.log('\n\nPrompt entry canceled.');
+      rl.close();
+      resolve('');
+    });
+  });
+}
+
 async function main() {
   try {
     // Read and validate context
@@ -160,9 +203,29 @@ async function main() {
       console.log(`Auto-selecting ${selectedLLM} (first provider with valid credentials).`);
     }
     
-    // Load prompt content (from file or directory)
+    // Load base prompt content (from file or directory)
     const promptPath = path.resolve(options.prompts);
-    const prompt = await loadPromptContent(promptPath);
+    const basePrompt = await loadPromptContent(promptPath);
+    
+    // Get user prompt if in interactive mode
+    let userPrompt = '';
+    if (options.interactive) {
+      userPrompt = await getUserPrompt();
+      if (!userPrompt) {
+        console.log('No prompt provided. Exiting.');
+        process.exit(0);
+      }
+    }
+    
+    // Combine base prompt with user prompt if in interactive mode
+    const prompt = options.interactive 
+      ? `${basePrompt}\n\nUser Request:\n${userPrompt}` 
+      : basePrompt;
+      
+    if (options.interactive) {
+      console.log('\nBase instructions loaded from prompts folder.');
+      console.log(`User prompt combined with base instructions.`);
+    }
     
     // Ensure output directory exists
     const outputPath = path.resolve(options.output);
@@ -194,6 +257,14 @@ async function main() {
     fs.writeFileSync(outputFilePath, response, 'utf8');
     
     console.log(`\nResponse saved to: ${outputFilePath}`);
+    
+    // In interactive mode, also display the response in the console
+    if (options.interactive) {
+      console.log('\n=== LLM Response ===');
+      console.log('-------------------------------------------');
+      console.log(response);
+      console.log('-------------------------------------------\n');
+    }
   } catch (error) {
     console.error('Error:', error.message);
     process.exit(1);

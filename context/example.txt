@@ -1,5 +1,0 @@
-This is an example file in the context folder.
-
-The context folder contains files that will be compressed and sent to the LLM API along with the prompt.
-
-You can add any text files, code files, or other content here that you want to provide as context to the LLM.

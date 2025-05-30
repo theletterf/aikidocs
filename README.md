@@ -120,6 +120,23 @@ aikidoc --credentials ./my-credentials.txt
 aikidoc --output ./my-responses
 ```
 
+### Interactive mode
+
+```bash
+# Use interactive mode to enter your prompt directly in the CLI
+aikidoc --interactive
+
+# Combine interactive mode with a specific LLM provider
+aikidoc --interactive --llm ollama
+```
+
+In interactive mode:
+
+1. The tool loads base instructions from your prompts folder.
+2. You can type your prompt directly in the terminal.
+3. Type `END` on a new line when finished .
+4. The response is displayed in the terminal and saved to a file.
+
 ### Advanced options
 
 ```bash
@@ -141,6 +158,7 @@ aikidoc --style my-style-guide.md
 | `--style` | `-s` | Name of style guide file | `style.md` |
 | `--llm` | `-l` | LLM provider (gemini, claude, openai, ollama) | Auto-detected |
 | `--output` | `-o` | Path to output folder | `./output` |
+| `--interactive` | `-i` | Enable interactive mode to enter prompt in CLI | `false` |
 
 ## License
 

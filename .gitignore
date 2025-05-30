@@ -2,6 +2,7 @@ node_modules
 credentials.txt
 prompt.txt
 /output/*
+/context/*
 
 # Logs
 logs
