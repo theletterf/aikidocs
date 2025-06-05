@@ -59,13 +59,29 @@ async function processDirectory(dirPath, depth = 0) {
  * Clean up context content
  */
 function cleanupContext(context) {
-  return context
-    .replace(/\n{3,}/g, '\n\n')                // Remove excessive newlines
-    .replace(/```[\s\S]*?```/g, match => match) // Preserve code blocks
-    .replace(/\s+$/gm, '')                     // Remove trailing whitespace
+  // Pull out and stash ```code blocks```, mark each with a %%_placeholder%%
+  const stash = [];
+  let i = 0;
+  context = context.replace(/```[\s\S]+?```/g, (match) => {
+    stash.push(match);
+    return `%%_${i++}%%`;
+  });
+
+  // Clean up spacing in the remaining content
+  context = context
+    .replace(/\n{3,}/g, '\n\n')       // Collapse 3+ newlines to 2
+    .replace(/[^\S\r\n]+$/gm, '')     // Remove trailing whitespace except newlines
     .trim();
+
+  // Restore each stashed string back to its placeholder
+  stash.forEach((block, idx) => {
+    context = context.replace(`%%_${idx}%%`, block);
+  });
+
+  return context;
 }
 
 module.exports = {
-  compressContext
+  compressContext,
+  cleanupContext
 };
