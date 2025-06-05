@@ -1,13 +1,14 @@
 {
   "name": "aikidoc",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Script to compress context and send to LLMs",
   "main": "index.js",
   "bin": {
     "aikidoc": "./index.js"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "mocha"
   },
   "dependencies": {
     "@dqbd/tiktoken": "^1.0.21",
@@ -15,5 +16,9 @@
     "commander": "^11.0.0",
     "dotenv": "^16.0.3",
     "gpt-3-encoder": "^1.1.4"
+  },
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.5.0"
   }
 }
