@@ -32,6 +32,28 @@ npm install
 npm link
 ```
 
+## Testing
+
+The project uses the `mocha` framework to run unit tests.
+
+### Setup
+
+**Note:** You will need to `npm` install the project **dev dependencies** (using the `-D` option) before running the unit tests.
+
+```bash
+npm install -D
+```
+
+### Running tests
+
+The unit test files can be found in the project `test` directory. You may add more tests there as needed.
+
+To run all unit tests:
+
+```bash
+npm run test
+```
+
 ## Project structure
 
 ```
@@ -44,14 +66,16 @@ aikidoc/
 │   ├── base-instructions.md    # Base instructions for prompts
 │   └── style.md               # Style guidelines for responses
 └── src/               # Source code
-    ├── compress.js    # Context compression logic
-    ├── tokenCounter.js # Token counting utilities
-    └── llm/           # LLM API integration
-        ├── claude.js  # Anthropic Claude API interface
-        ├── gemini.js  # Google Gemini API interface
-        ├── index.js   # LLM module entry point
-        ├── ollama.js  # Local Ollama API interface
-        └── openai.js  # OpenAI API interface
+│   ├── compress.js    # Context compression logic
+│   ├── tokenCounter.js # Token counting utilities
+│   └── llm/           # LLM API integration
+│       ├── claude.js  # Anthropic Claude API interface
+│       ├── gemini.js  # Google Gemini API interface
+│       ├── index.js   # LLM module entry point
+│       ├── ollama.js  # Local Ollama API interface
+│       └── openai.js  # OpenAI API interface
+└── test
+    └── cleanupContext.test.js # Test the cleanup logic
 ```
 
 ## Setup
