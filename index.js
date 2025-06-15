@@ -34,6 +34,10 @@ program
 
 program.parse(process.argv);
 
+// Check if running in serve mode
+const serveCommand = program.commands.find(cmd => cmd.name() === 'serve');
+const isServeMode = process.argv.includes('serve');
+
 const options = program.opts();
 
 /**
@@ -285,7 +289,10 @@ async function main() {
   }
 }
 
-main();
+// Only run the main function if not in serve mode
+if (!isServeMode) {
+  main();
+}
 
 /**
  * Start the web UI server
@@ -297,7 +304,7 @@ function startWebServer(options) {
     // Import the web server module
     const { createServer } = require('./src/web/server');
     
-    // Create and start the server
+    // Create and start the server with minimal output
     const server = createServer({
       port: options.port,
       context: options.context,
@@ -308,11 +315,13 @@ function startWebServer(options) {
       output: options.output
     });
     
-    console.log(`Starting Aikidocs web UI...`);
+    // Start the server silently
     server.start();
     
-    console.log(`\nAikidocs web UI is running at http://localhost:${options.port}`);
-    console.log(`Press Ctrl+C to stop the server.`);
+    // Only show the essential information
+    console.clear();
+    console.log(`Aikidocs web UI is running at http://localhost:${options.port}`);
+    console.log(`Press Ctrl+C to stop the server.\n`);
   } catch (error) {
     console.error('Error starting web server:', error.message);
     process.exit(1);

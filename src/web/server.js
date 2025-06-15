@@ -161,9 +161,16 @@ function createServer(options = {}) {
     }
   });
   
+  // Custom logging function
+  const log = (message, isStatus = false) => {
+    if (isStatus) {
+      console.log(`[${new Date().toLocaleTimeString()}] ${message}`);
+    }
+  };
+  
   // Socket.IO connection handling
   io.on('connection', (socket) => {
-    console.log('Client connected');
+    log('Client connected', true);
     
     socket.on('generate', async (data) => {
       try {
@@ -205,7 +212,9 @@ function createServer(options = {}) {
         });
         
         // Send to LLM
+        log(`Processing request with ${selectedLLM}...`, true);
         const response = await sendToLLM(compressedContext, prompt, credentialsText, selectedLLM);
+        log(`Response generated successfully`, true);
         
         // Generate timestamp for filename
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -228,7 +237,7 @@ function createServer(options = {}) {
     });
     
     socket.on('disconnect', () => {
-      console.log('Client disconnected');
+      log('Client disconnected', true);
     });
   });
   
@@ -236,9 +245,10 @@ function createServer(options = {}) {
     app,
     server,
     io,
+    log,
     start: () => {
       server.listen(port, () => {
-        console.log(`Aikidoc web server running at http://localhost:${port}`);
+        // This will be handled by the main file
       });
     }
   };
