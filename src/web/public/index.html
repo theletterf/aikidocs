@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aikidocs - Web UI</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <div class="header-content">Aikidocs :: Generate contextual documentation with LLMs</div>
+    </header>
+
+    <main>
+      <div class="panels">
+        <!-- Left panel: Context and Prompts -->
+        <div class="panel input-panel">
+          <nav class="tab-navigation">
+            <ul class="tab-list">
+              <li><button class="tab-button active" data-tab="context">Context</button></li>
+              <li><button class="tab-button" data-tab="instructions">Base Instructions</button></li>
+              <li><button class="tab-button" data-tab="style">Style Guide</button></li>
+            </ul>
+          </nav>
+          
+          <div class="tab-content-container">
+            <!-- Context Tab -->
+            <div class="tab-content active" id="context-tab">
+              <h2>Context Files</h2>
+              <div class="dropzone" id="file-dropzone">
+                <p>Drag and drop files here, or</p>
+                <input type="file" id="file-input" multiple hidden>
+                <button id="file-select-button">Select Files</button>
+              </div>
+              <div class="file-list-container">
+                <div id="file-summary">No files uploaded</div>
+                <div class="file-actions">
+                  <button id="add-more-files" class="small-button">Add More</button>
+                  <button id="clear-files" class="small-button">Clear All</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Base Instructions Tab -->
+            <div class="tab-content" id="instructions-tab">
+              <h2>Base Instructions</h2>
+              <textarea id="base-instructions" placeholder="Enter base instructions here..."></textarea>
+            </div>
+            
+            <!-- Style Guide Tab -->
+            <div class="tab-content" id="style-tab">
+              <h2>Style Guide</h2>
+              <textarea id="style-guide" placeholder="Enter style guide here..."></textarea>
+            </div>
+          </div>
+          
+          <div class="user-prompt-container">
+            <h2>Your Request</h2>
+            <textarea id="user-prompt" placeholder="Enter your specific request here..."></textarea>
+          </div>
+          
+          <div class="controls">
+            <div class="model-selection">
+              <label for="model-select">LLM Model:</label>
+              <select id="model-select">
+                <option value="" disabled selected>Select a model</option>
+              </select>
+            </div>
+            <button id="generate-button" class="primary-button">Generate</button>
+            <button id="save-prompts-button">Save Prompts</button>
+          </div>
+        </div>
+        
+        <!-- Right panel: Output -->
+        <div class="panel output-panel">
+          <div class="output-header">
+            <h2>Output</h2>
+            <div class="output-actions">
+              <button id="copy-output-button" title="Copy to clipboard">Copy</button>
+              <button id="download-output-button" title="Download as Markdown">Download</button>
+            </div>
+          </div>
+          
+          <div id="status-display"></div>
+          
+          <div id="output-content"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>
