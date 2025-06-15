@@ -8,7 +8,11 @@ const { sendToLLM } = require('./src/llm');
 const { countTokens } = require('./src/tokenCounter');
 const readline = require('readline'); // Replaced inquirer with readline
 
+// Define version from package.json
+const packageJson = require('./package.json');
+
 program
+  .version(packageJson.version)
   .option('-c, --context <path>', 'path to context folder', './context')
   .option('-r, --credentials <path>', 'path to credentials file', './credentials.txt')
   .option('-p, --prompts <path>', 'path to prompts folder or file', './prompts')
@@ -16,8 +20,19 @@ program
   .option('-s, --style <name>', 'name of style guide file to use', 'style.md')
   .option('-l, --llm <provider>', 'LLM provider (gemini, claude, openai, ollama)', '')
   .option('-o, --output <path>', 'path to output folder', './output')
-  .option('-i, --interactive', 'enable interactive mode to enter prompt in CLI')
-  .parse(process.argv);
+  .option('-i, --interactive', 'enable interactive mode to enter prompt in CLI');
+
+// Add serve command
+program
+  .command('serve')
+  .description('Start the Aikidocs web UI')
+  .option('-p, --port <number>', 'port to run the server on', 3000)
+  .action((cmdOptions) => {
+    const options = { ...program.opts(), ...cmdOptions };
+    startWebServer(options);
+  });
+
+program.parse(process.argv);
 
 const options = program.opts();
 
@@ -271,3 +286,35 @@ async function main() {
 }
 
 main();
+
+/**
+ * Start the web UI server
+ * 
+ * @param {object} options - Server configuration options
+ */
+function startWebServer(options) {
+  try {
+    // Import the web server module
+    const { createServer } = require('./src/web/server');
+    
+    // Create and start the server
+    const server = createServer({
+      port: options.port,
+      context: options.context,
+      credentials: options.credentials,
+      prompts: options.prompts,
+      baseInstruction: options.baseInstruction,
+      style: options.style,
+      output: options.output
+    });
+    
+    console.log(`Starting Aikidocs web UI...`);
+    server.start();
+    
+    console.log(`\nAikidocs web UI is running at http://localhost:${options.port}`);
+    console.log(`Press Ctrl+C to stop the server.`);
+  } catch (error) {
+    console.error('Error starting web server:', error.message);
+    process.exit(1);
+  }
+}

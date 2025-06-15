@@ -15,6 +15,8 @@ Note that I'm developing Aikidocs using GitHub Copilot.
 - Smart token counting and cost estimation before sending requests.
 - Flexible prompt structure with base instructions and style guides.
 - Output responses saved with timestamps for reference.
+- Modern web UI for drag-and-drop file uploads and easy prompt editing.
+- Download generated content as Markdown.
 
 ## Installation
 
@@ -107,6 +109,22 @@ OLLAMA_MODEL=llama3.2
 
 ## Usage examples
 
+### Web UI
+
+```bash
+# Start the web UI on the default port (3000)
+aikidoc serve
+
+# Start the web UI on a custom port
+aikidoc serve --port 8080
+```
+
+The web UI provides a user-friendly interface where you can:
+- Drag and drop context files
+- Edit base instructions and style guides
+- Select an LLM model
+- View and download generated content as Markdown
+
 ### Basic usage
 
 ```bash
@@ -175,6 +193,8 @@ aikidoc --style my-style-guide.md
 
 ## Command line options
 
+### Global options
+
 | Option | Alias | Description | Default |
 |--------|-------|-------------|---------|
 | `--context` | `-c` | Path to context folder | `./context` |
@@ -185,6 +205,16 @@ aikidoc --style my-style-guide.md
 | `--llm` | `-l` | LLM provider (gemini, claude, openai, ollama) | Auto-detected |
 | `--output` | `-o` | Path to output folder | `./output` |
 | `--interactive` | `-i` | Enable interactive mode to enter prompt in CLI | `false` |
+
+### Serve command options
+
+```bash
+aikidoc serve [options]
+```
+
+| Option | Description | Default |
+|--------|-------------|---------|  
+| `--port` | Port to run the web server on | `3000` |
 
 ## License
 

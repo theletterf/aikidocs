@@ -13,13 +13,21 @@ async function sendToOpenAI(prompt, credentials) {
   }
   
   try {
+    // Create request payload, only include temperature if not using o4-mini model
+    const model = credentials.OPENAI_MODEL || 'gpt-4';
+    const payload = {
+      model,
+      messages: [{ role: 'user', content: prompt }]
+    };
+    
+    // Only add temperature if not using o4-mini model which doesn't support custom temperature
+    if (!model.includes('o4-mini')) {
+      payload.temperature = 0.7;
+    }
+    
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
-      {
-        model: credentials.OPENAI_MODEL || 'gpt-4',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7,
-      },
+      payload,
       {
         headers: {
           'Content-Type': 'application/json',
