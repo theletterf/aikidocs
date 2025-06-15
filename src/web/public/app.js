@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // DOM elements
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
+  
+  // Hide instructions and style tabs on initial page load
+  document.getElementById('instructions-tab').style.display = 'none';
+  document.getElementById('style-tab').style.display = 'none';
   const fileDropzone = document.getElementById('file-dropzone');
   const fileInput = document.getElementById('file-input');
   const fileSelectButton = document.getElementById('file-select-button');
@@ -47,6 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const activeTab = document.getElementById(`${tabName}-tab`);
       activeTab.classList.add('active');
       activeTab.style.display = 'flex';
+      
+      // Hide instructions and style tabs when in context tab
+      if (tabName === 'context') {
+        document.getElementById('instructions-tab').style.display = 'none';
+        document.getElementById('style-tab').style.display = 'none';
+      }
       
       // Log for debugging
       console.log(`Switched to tab: ${tabName}`);
